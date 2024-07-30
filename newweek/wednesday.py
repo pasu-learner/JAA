@@ -894,81 +894,363 @@ def common( db : Session , date : str , dataoptiopns   , option : str , statusda
             return commoncalculation(db,newquery, date)
         
         elif option == "entitylist"  and statusdata == 'CHARGABLE':
-            db_res = db.query(models.TL).filter(
+
+            list_ddata1 = set()
+
+           
+
+            db_res2 = db.query(models.TL).filter(
                 models.TL.type_of_activity == 'CHARGABLE',
                 models.TL.name_of_entity == dataoptiopns,
-                or_(
-                    models.TL.working_time.like(f"%{date}%"),
-                    models.TL.reallocated_time.like(f"%{date}%"),
-                )
-                ).all()
-            return commoncalculation(db,db_res, date)
+                models.TL.status == 1,
+                models.TL.working_time.like(f"%{date}%")    
+            )
 
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+
+            db_res2 = db.query(models.TL).filter(
+                models.TL.type_of_activity == 'CHARGABLE',
+                models.TL.name_of_entity == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID == models.HOLD.Service_ID,
+                or_(
+                    models.HOLD.hold_time_end.like(f"%{date}%"),
+                    models.TL.working_time.like(f"%{date}%")
+                )
+                
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+            
+            db_res2 = db.query(models.TL).filter(
+                models.TL.type_of_activity == 'CHARGABLE',
+                models.TL.name_of_entity == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID == models.END_OF_DAY.Service_ID,
+                or_(
+                    models.END_OF_DAY.end_time_end.like(f"%{date}%"),
+                    models.TL.working_time.like(f"%{date}%")
+                )
+                
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+                
+
+        # final query
+            newquery =  db.query(models.TL).filter(
+                models.TL.type_of_activity == 'CHARGABLE',
+                models.TL.name_of_entity == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID.in_(list_ddata1)
+            ).all()
+
+            
+            
+            return commoncalculation(db,newquery, date)
         elif option == "entitylist"  and statusdata == 'Non-Charchable':
             
-            db_res = db.query(models.TL).filter(
+            list_ddata1 = set()
+
+           
+
+            db_res2 = db.query(models.TL).filter(
                 models.TL.type_of_activity == 'Non-Charchable',
                 models.TL.name_of_entity == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.working_time.like(f"%{date}%")    
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+
+            db_res2 = db.query(models.TL).filter(
+                models.TL.type_of_activity == 'Non-Charchable',
+                models.TL.name_of_entity == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID == models.HOLD.Service_ID,
                 or_(
-                    models.TL.working_time.like(f"%{date}%"),
-                    models.TL.reallocated_time.like(f"%{date}%"),
+                    models.HOLD.hold_time_end.like(f"%{date}%"),
+                    models.TL.working_time.like(f"%{date}%")
                 )
-                ).all()
-            return commoncalculation(db,db_res, date)
+                
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+            
+            db_res2 = db.query(models.TL).filter(
+                models.TL.type_of_activity == 'Non-Charchable',
+                models.TL.name_of_entity == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID == models.END_OF_DAY.Service_ID,
+                or_(
+                    models.END_OF_DAY.end_time_end.like(f"%{date}%"),
+                    models.TL.working_time.like(f"%{date}%")
+                )
+                
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+                
+
+        # final query
+            newquery =  db.query(models.TL).filter(
+                models.TL.type_of_activity == 'Non-Charchable',
+                models.TL.name_of_entity == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID.in_(list_ddata1)
+            ).all()
+
+            
+            
+            return commoncalculation(db,newquery, date)
 
 
         elif option == "scopelist" and statusdata == 'CHARGABLE':
             
-            db_res = db.query(models.TL).filter(
+
+          
+            list_ddata1 = set()
+
+           
+
+            db_res2 = db.query(models.TL).filter(
                 models.TL.type_of_activity == 'CHARGABLE',
                 models.TL.Scope == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.working_time.like(f"%{date}%")    
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+
+            db_res2 = db.query(models.TL).filter(
+                models.TL.type_of_activity == 'CHARGABLE',
+                models.TL.Scope == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID == models.HOLD.Service_ID,
                 or_(
-                    models.TL.working_time.like(f"%{date}%"),
-                    models.TL.reallocated_time.like(f"%{date}%"),
-                  
+                    models.HOLD.hold_time_end.like(f"%{date}%"),
+                    models.TL.working_time.like(f"%{date}%")
                 )
-                ).all()
-            return commoncalculation(db,db_res, date)
+                
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+            
+            db_res2 = db.query(models.TL).filter(
+                models.TL.type_of_activity == 'CHARGABLE',
+                models.TL.Scope == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID == models.END_OF_DAY.Service_ID,
+                or_(
+                    models.END_OF_DAY.end_time_end.like(f"%{date}%"),
+                    models.TL.working_time.like(f"%{date}%")
+                )
+                
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+                
+
+        # final query
+            newquery =  db.query(models.TL).filter(
+                models.TL.type_of_activity == 'CHARGABLE',
+                models.TL.Scope == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID.in_(list_ddata1)
+            ).all()
+
+            
+            
+            return commoncalculation(db,newquery, date)
 
         elif option == "scopelist" and statusdata == 'Non-Charchable':
             
-            db_res = db.query(models.TL).filter(
+
+            list_ddata1 = set()
+
+           
+
+            db_res2 = db.query(models.TL).filter(
                 models.TL.type_of_activity == 'Non-Charchable',
                 models.TL.Scope == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.working_time.like(f"%{date}%")    
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+
+            db_res2 = db.query(models.TL).filter(
+                models.TL.type_of_activity == 'Non-Charchable',
+                models.TL.Scope == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID == models.HOLD.Service_ID,
                 or_(
-                    models.TL.working_time.like(f"%{date}%"),
-                    models.TL.reallocated_time.like(f"%{date}%"),
-                
+                    models.HOLD.hold_time_end.like(f"%{date}%"),
+                    models.TL.working_time.like(f"%{date}%")
                 )
-                ).all()
-            return commoncalculation(db,db_res, date)
+                
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+            
+            db_res2 = db.query(models.TL).filter(
+                models.TL.type_of_activity == 'Non-Charchable',
+                models.TL.Scope == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID == models.END_OF_DAY.Service_ID,
+                or_(
+                    models.END_OF_DAY.end_time_end.like(f"%{date}%"),
+                    models.TL.working_time.like(f"%{date}%")
+                )
+                
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+                
+
+        # final query
+            newquery =  db.query(models.TL).filter(
+                models.TL.type_of_activity == 'Non-Charchable',
+                models.TL.Scope == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID.in_(list_ddata1)
+            ).all()
+
+            
+            
+            return commoncalculation(db,newquery, date)
 
         elif option == "subscope"  and statusdata == 'CHARGABLE':
             
-            db_res = db.query(models.TL).filter(
+
+            list_ddata1 = set()
+
+           
+
+            db_res2 = db.query(models.TL).filter(
                 models.TL.type_of_activity == 'CHARGABLE',
                 models.TL.From == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.working_time.like(f"%{date}%")    
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+
+            db_res2 = db.query(models.TL).filter(
+                models.TL.type_of_activity == 'CHARGABLE',
+                models.TL.From == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID == models.HOLD.Service_ID,
                 or_(
-                    models.TL.working_time.like(f"%{date}%"),
-                    models.TL.reallocated_time.like(f"%{date}%"),
-                   
+                    models.HOLD.hold_time_end.like(f"%{date}%"),
+                    models.TL.working_time.like(f"%{date}%")
                 )
-                ).all()
-            return commoncalculation(db,db_res, date)
+                
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+            
+            db_res2 = db.query(models.TL).filter(
+                models.TL.type_of_activity == 'CHARGABLE',
+                models.TL.From == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID == models.END_OF_DAY.Service_ID,
+                or_(
+                    models.END_OF_DAY.end_time_end.like(f"%{date}%"),
+                    models.TL.working_time.like(f"%{date}%")
+                )
+                
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+                
+
+        # final query
+            newquery =  db.query(models.TL).filter(
+                models.TL.type_of_activity == 'CHARGABLE',
+                models.TL.From == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID.in_(list_ddata1)
+            ).all()
+
+            
+            
+            return commoncalculation(db,newquery, date)
 
         elif option == "subscope"  and statusdata == 'Non-Charchable':
             
-            db_res = db.query(models.TL).filter(
+            list_ddata1 = set()
+
+           
+
+            db_res2 = db.query(models.TL).filter(
                 models.TL.type_of_activity == 'Non-Charchable',
                 models.TL.From == dataoptiopns,
-                or_(
-                    models.TL.working_time.like(f"%{date}%"),
-                    models.TL.reallocated_time.like(f"%{date}%"),
-                    
-                )
-                ).all()
-            return commoncalculation(db,db_res, date)
+                models.TL.status == 1,
+                models.TL.working_time.like(f"%{date}%")    
+            )
 
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+
+            db_res2 = db.query(models.TL).filter(
+                models.TL.type_of_activity == 'Non-Charchable',
+                models.TL.From == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID == models.HOLD.Service_ID,
+                or_(
+                    models.HOLD.hold_time_end.like(f"%{date}%"),
+                    models.TL.working_time.like(f"%{date}%")
+                )
+                
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+            
+            db_res2 = db.query(models.TL).filter(
+                models.TL.type_of_activity == 'Non-Charchable',
+                models.TL.From == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID == models.END_OF_DAY.Service_ID,
+                or_(
+                    models.END_OF_DAY.end_time_end.like(f"%{date}%"),
+                    models.TL.working_time.like(f"%{date}%")
+                )
+                
+            )
+
+            for row2 in db_res2:
+                list_ddata1.add(row2.Service_ID)
+                
+
+        # final query
+            newquery =  db.query(models.TL).filter(
+                models.TL.type_of_activity == 'Non-Charchable',
+                models.TL.From == dataoptiopns,
+                models.TL.status == 1,
+                models.TL.Service_ID.in_(list_ddata1)
+            ).all()
+
+            
+            
+            return commoncalculation(db,newquery, date)
+        
 def user_wise_report(db: Session,date: str,option: str):
     list_data = []
     list_ddata1 = set()
