@@ -309,7 +309,7 @@ def commoncalculation(db: Session,db_res, date: str):
                         else:
                             hold_time_report = time_difference(datetime.strptime(nq.hold_time_end, date_time_formate_string),datetime.strptime(nq.hold_time_start, date_time_formate_string))
 
-                # date['hold'] = hold_time_report
+                data['hold'] = hold_time_report
 
                 print(hold_time_report,'lllllllllllllllllllllllllllllllllllllll')
 
@@ -327,6 +327,7 @@ def commoncalculation(db: Session,db_res, date: str):
                     else:
                         break_time_report = time_difference( datetime.strptime(nq.break_time_end, date_time_formate_string),datetime.strptime(nq.break_time_start, date_time_formate_string))
 
+                data['break'] = str(break_time_report)
             # except Exception as e:
             
             #     print(f"An unexpected error occurred: {e}")
@@ -341,11 +342,9 @@ def commoncalculation(db: Session,db_res, date: str):
                     if meeting_time_report != None:
                         meeting_time_report = meeting_time_report+time_difference(datetime.strptime(nq.meeting_time_end, date_time_formate_string),datetime.strptime(nq.meeting_time_start, date_time_formate_string))
                     else:
-
-    
-
                         meeting_time_report = time_difference(datetime.strptime(nq.meeting_time_end, date_time_formate_string),datetime.strptime(nq.meeting_time_start, date_time_formate_string))
 
+                data['meeting'] = str(meeting_time_report)                
             # except Exception as e:
             
             #     print(f"An unexpected error occurred: {e}")
@@ -363,6 +362,7 @@ def commoncalculation(db: Session,db_res, date: str):
                     else:
                         call_time_report = time_difference(datetime.strptime(nq.call_time_end, date_time_formate_string),datetime.strptime(nq.call_time_start, date_time_formate_string))
 
+                data['call'] = str(call_time_report)
             # except Exception as e:
             
             #     print(f"An unexpected error occurred: {e}")
@@ -740,27 +740,27 @@ def commoncalculation(db: Session,db_res, date: str):
                 # break_time_report = None
                 # meeting_time_report = None
                 # call_time_report = None
-                print(str(hold_time_report),break_time_report,call_time_report,meeting_time_report)
-                try:
-                    date['hold'] = str(hold_time_report)
-                except:
-                        None
-                try:
-                    date['break'] = str(break_time_report)
-                except:
-                        None
-                try:
-                    date['call'] = str(call_time_report)
-                except:
-                        None
-                try:
-                    date['meeting'] = str(meeting_time_report)
-                except:
-                        None
+                # print(str(hold_time_report),break_time_report,call_time_report,meeting_time_report)
+                # try:
+                #     date['hold'] = str(hold_time_report)
+                # except:
+                #         None
+                # try:
+                #     date['break'] = str(break_time_report)
+                # except:
+                #         None
+                # try:
+                #     date['call'] = str(call_time_report)
+                # except:
+                #         None
+                # try:
+                #     date['meeting'] = str(meeting_time_report)
+                # except:
+                #         None
                 # 'in_progress' 
                 # data['completed'] = Totaltime
                 # print(data['completed'],'9999999999999999999999999999999999999999999999999999999999')
-
+                
                 data["fourth_report"] = row.no_of_items
                 data["fourth_report2"] = str_temp
                 data["fifth_report"] = str_temper                    
