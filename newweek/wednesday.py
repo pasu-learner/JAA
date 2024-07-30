@@ -327,7 +327,7 @@ def commoncalculation(db: Session,db_res, date: str):
                     else:
                         break_time_report = time_difference( datetime.strptime(nq.break_time_end, date_time_formate_string),datetime.strptime(nq.break_time_start, date_time_formate_string))
 
-                data['break'] = str(break_time_report)
+                data['break'] = break_time_report
             # except Exception as e:
             
             #     print(f"An unexpected error occurred: {e}")
@@ -344,7 +344,7 @@ def commoncalculation(db: Session,db_res, date: str):
                     else:
                         meeting_time_report = time_difference(datetime.strptime(nq.meeting_time_end, date_time_formate_string),datetime.strptime(nq.meeting_time_start, date_time_formate_string))
 
-                data['meeting'] = str(meeting_time_report)                
+                data['meeting'] = meeting_time_report               
             # except Exception as e:
             
             #     print(f"An unexpected error occurred: {e}")
@@ -362,7 +362,7 @@ def commoncalculation(db: Session,db_res, date: str):
                     else:
                         call_time_report = time_difference(datetime.strptime(nq.call_time_end, date_time_formate_string),datetime.strptime(nq.call_time_start, date_time_formate_string))
 
-                data['call'] = str(call_time_report)
+                data['call'] = call_time_report
             # except Exception as e:
             
             #     print(f"An unexpected error occurred: {e}")
