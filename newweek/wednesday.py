@@ -1422,12 +1422,14 @@ def user_wise_report(db: Session,date: str,option: str):
     subscopeslist = set() # form
     userlist = set() 
     entitylist = set() # name of entity
+    twenty = set()
 
     for row in db_res:
         userlist.add(row._user_table1.user_id)
         entitylist.add(row.name_of_entity)
         Scopelist.add(row.Scope)
         subscopeslist.add(row.From)
+        twenty.add(row.Service_ID)
  
     if option == "userlist":
         
@@ -1447,7 +1449,9 @@ def user_wise_report(db: Session,date: str,option: str):
     elif option == "subscope":
         
         finalfilter = subscopeslist
-
+    elif option == "twenty":
+        
+        finalfilter = subscopeslist
 
     # print(userlist,"userlist")
     # print(entitylist, "entitylist")
