@@ -678,7 +678,7 @@ def commoncalculation(db: Session,db_res, date: str):
                     ).all()
                     for meet_obj in db_res3:
                         data["third_report_data"] = meet_obj.remarks
-
+                        str_temper = meet_obj.remarks
 
                 elif row.work_status == "Break":
                     db_res3 = db.query(models.BREAK).filter(
@@ -687,6 +687,7 @@ def commoncalculation(db: Session,db_res, date: str):
                     for break_obj in db_res3:
                       
                         data["third_report_data"] = break_obj.remarks
+                        str_temper = break_obj.remarks
                         
                 elif row.work_status == "Clarification Call":
                     db_res3 = db.query(models.CALL).filter(
@@ -695,9 +696,12 @@ def commoncalculation(db: Session,db_res, date: str):
                     for call_obj in db_res3:
                       
                         data["third_report_data"] = call_obj.remarks
+                        str_temper = call_obj.remarks
 
                 elif row.work_status == "Completed":
                     data["third_report_data"] = row.remarks
+                    str_temper = row.remarks
+
 
                 if row.work_status == "Completed":
                     try:
