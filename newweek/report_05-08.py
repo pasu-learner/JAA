@@ -355,6 +355,8 @@ def commoncalculation(db: Session,db_res, date: str):
                                 hold_time_report =  time1
 
                 data["hold"] = hold_time_report
+
+                print(hold_time_report,'holdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd')
 #----------------------- hold code completed
 
 
