@@ -24,7 +24,7 @@ def time_difference(time1a , time2a):
              time1 = datetime.strptime(time1, date_time_formate_string)
     if time2:
         if type(time2) == str:
-             time2 = datetime.strptime(time1, date_time_formate_string)
+             time2 = datetime.strptime(time2, date_time_formate_string)
     if time1 and time2:
         try:
             # print(time1,time2,'two times')
@@ -314,7 +314,7 @@ def commoncalculation(db: Session,db_res, date: str):
                     None
                     # print(f"An unexpected error occurred: {e}")
 
-                # print(past_today_greater,'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+                # print(past_end_t2,'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
 #----------------------------------------------------------------------------------------------------   timing code for past today start
     
 
@@ -443,7 +443,7 @@ def commoncalculation(db: Session,db_res, date: str):
                         
 
                         for row2 in db_res2:
-                            if meeting_time_report != None:
+                            if call_time_report != None:
                                 if row2.call_time_end and row2.call_time_start:
                                     date_time11 = datetime.strptime(row2.call_time_end, date_time_formate_string)
                                     date_time22 = datetime.strptime(row2.call_time_start, date_time_formate_string)
@@ -451,6 +451,7 @@ def commoncalculation(db: Session,db_res, date: str):
                                     call_time_report += time_diff
                                 else :
                                     if not(row.work_status == "Completed" or row.work_status == "in_progress"):
+
                                         time1 =  datetime.now() - datetime.strptime(row2.call_time_start, date_time_formate_string)
                                     
                                         call_time_report += time1
@@ -668,6 +669,22 @@ def commoncalculation(db: Session,db_res, date: str):
                             data['in_progress'] = timediff_f2
                             
 
+                elif (working_time_report.date()==current_time_report.date()) and past_end_t2!=None:
+                        print('(working_time_report == current_time_report) and past_today_greater -not completed............................................')
+                        timei1 = working_time_report
+                        timei2 =  past_end_t2
+                        timediff_f2 = time_difference(timei2,timei1)
+
+                        # print(timei1,timei2,'uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu')
+                        try:  
+                            Totaltime = timediff_f2 - totalminus
+                            data['in_progress'] = Totaltime
+                            # print("1111111111111111111111111111111111111111111111111111")
+                        except Exception as e:
+                            data['in_progress'] = timediff_f2
+                            # print("2222222222222222222222222222222222222222")
+                            # print(f"An unexpected error occurred: {e}")
+                        # print(Totaltime,'sameday not finished')
 
                 elif working_time_report.date()==current_time_report.date():
                         print('working_time_report == current_time_report not completed............................................')
@@ -1842,7 +1859,10 @@ def user_wise_report(db: Session,date: str,option: str):
                         except:
                             None                                                                                                                                                           
                     else:
-                        combined_datab[key].add(entry[key])
+                        try:
+                            combined_datab[key].add(entry[key])
+                        except :
+                            None
 
 
 
